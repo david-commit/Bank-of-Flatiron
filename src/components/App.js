@@ -1,13 +1,21 @@
-import React from "react";
-import AccountContainer from "./AccountContainer";
+import React from 'react';
+import AccountContainer from './AccountContainer';
 
 function App() {
+  function handleOnSearch(search, setTransactions) {
+    setTransactions((transactions) => {
+      transactions.filter((transaction) =>
+        transaction.description.includes(search)
+      );
+    });
+  }
+
   return (
-    <div className="ui raised segment">
-      <div className="ui segment violet inverted">
+    <div className='ui raised segment'>
+      <div className='ui segment violet inverted'>
         <h2>The Royal Bank of Flatiron</h2>
       </div>
-      <AccountContainer />
+      <AccountContainer handleSearch={handleOnSearch} />
     </div>
   );
 }
