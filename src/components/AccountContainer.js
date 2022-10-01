@@ -1,25 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import TransactionsList from './TransactionsList';
 import Search from './Search';
 import AddTransactionForm from './AddTransactionForm';
 
-function AccountContainer({ handleSearch }) {
-  const [transaction, setTransaction] = useState([]);
-  const [search, setSearch] = useState('');
+function AccountContainer() {
+  const [transactions, setTransactions] = useState([]);
+  const [searchQuery, setSearchQuery] = useState([]);
   useEffect(() => {
     fetch('http://localhost:8001/transactions')
       .then((response) => response.json())
-      .then((transaction) => setTransaction(transaction));
+      .then((data) => {
+        setTransactions(data);
+        setSearchQuery(data);
+      })
+      .catch((err) => console.log(err));
   }, []);
+console.log(transactions)
   function handleSearch(e) {
-    setSearch(e.target.value);
+    setTransactions(
+      searchQuery.filter((transactions) => {
+        return (transactions.description
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase()))
+      })
+    );
+    return transactions
   }
-
   return (
     <div>
-      <Search onSearch={handleSearch} />
-      <AddTransactionForm />
-      <TransactionsList />
+      <Search handleSearch={handleSearch} />
+      <AddTransactionForm transactions={transactions} />
+      <TransactionsList transactions={transactions} />
     </div>
   );
 }

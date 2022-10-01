@@ -1,14 +1,17 @@
 import React from 'react';
 
-function Transaction({ id, category, date, description, amount }) {
-  return (
-    <tr key={id}>
-      <td>{date}</td>
-      <td>{description}</td>
-      <td>{category}</td>
-      <td>{amount}</td>
-    </tr>
-  );
+function Transaction(props) {
+  const mappedTransaction = props.transactions.map((transaction) => {
+    return (
+      <tr key={transaction.id}>
+        <td>{transaction.date}</td>
+        <td>{transaction.description}</td>
+        <td>{transaction.category}</td>
+        <td>{transaction.amount}</td>
+      </tr>
+    );
+  });
+  return mappedTransaction
 }
 
 export default Transaction;
